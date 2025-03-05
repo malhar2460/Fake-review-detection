@@ -1,16 +1,18 @@
-# name: Run Experiment Notebook
+name: Run Notebooks
 
 on:
-  workflow_dispatch:
   push:
     branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   run-notebook:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Check out code
         uses: actions/checkout@v3
 
       - name: Set up Python
@@ -24,11 +26,12 @@ jobs:
           pip install -r requirements.txt
           pip install jupyter nbconvert
 
-      - name: Run Experiment Notebook
+      - name: Run N5_model_dev Notebook
         run: |
-          jupyter nbconvert --to notebook --execute Fake-review-detection/Notebooks/N5_Modal_dev.ipynb --output executed_notebook.ipynb
-      - name: Upload executed notebook as artifact
-        uses: actions/upload-artifact@v3
+          jupyter nbconvert --to notebook --execute N5_model_dev.ipynb --output executed_N5_model_dev.ipynb
+
+      - name: Upload executed notebook artifact
+        uses: actions/upload-artifact@v4
         with:
           name: executed-notebook
-          path: executed_notebook.ipynb
+          path: executed_N5_model_dev.ipynb
