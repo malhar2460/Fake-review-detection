@@ -1,4 +1,4 @@
-name: Run Notebooks
+name: Run N5_model_dev Notebook
 
 on:
   push:
@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out code
+      - name: Check out repository
         uses: actions/checkout@v3
 
       - name: Set up Python
@@ -28,10 +28,10 @@ jobs:
 
       - name: Run N5_model_dev Notebook
         run: |
-          jupyter nbconvert --to notebook --execute N5_model_dev.ipynb --output executed_N5_model_dev.ipynb
+          jupyter nbconvert --to notebook --execute N5_Model_dev.ipynb --output executed_N5_Model_dev.ipynb
 
       - name: Upload executed notebook artifact
         uses: actions/upload-artifact@v4
         with:
           name: executed-notebook
-          path: executed_N5_model_dev.ipynb
+          path: executed_N5_Model_dev.ipynb
