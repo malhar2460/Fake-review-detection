@@ -1,4 +1,4 @@
-name: Run N5_model_dev Notebook
+name: Run N5_Modal_dev Notebook
 
 on:
   push:
@@ -15,6 +15,9 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v3
 
+      - name: Debug Listing
+        run: ls -R
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -26,12 +29,12 @@ jobs:
           pip install -r requirements.txt
           pip install jupyter nbconvert
 
-      - name: Run N5_model_dev Notebook
+      - name: Execute N5_Modal_dev Notebook
         run: |
-          jupyter nbconvert --to notebook --execute N5_Model_dev.ipynb --output executed_N5_Model_dev.ipynb
+          jupyter nbconvert --to notebook --execute ../../Notebooks/N5_Modal_dev.ipynb --output executed_N5_Modal_dev.ipynb
 
       - name: Upload executed notebook artifact
         uses: actions/upload-artifact@v4
         with:
           name: executed-notebook
-          path: executed_N5_Model_dev.ipynb
+          path: executed_N5_Modal_dev.ipynb
