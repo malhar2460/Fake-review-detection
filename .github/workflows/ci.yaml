@@ -36,7 +36,7 @@ jobs:
       - name: Execute N5_Modal_dev Notebook
         run: |
           jupyter nbconvert --to notebook \
-            --execute ../../Notebooks/N5_Modal_dev.ipynb \
+            --execute Notebooks/N5_Modal_dev.ipynb \
             --output executed_N5_Modal_dev.ipynb
 
       - name: Upload executed notebook artifact
