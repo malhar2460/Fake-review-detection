@@ -1,7 +1,16 @@
+import streamlit as st
+st.set_page_config(
+    page_title="Fake Review Detection",
+    page_icon="🤖",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
 import os
 import warnings
+from sklearn.exceptions import ConvergenceWarning
+warnings.filterwarnings("ignore", category=ConvergenceWarning)
 import joblib
-import streamlit as st
 import numpy as np
 import pandas as pd
 import altair as alt
@@ -70,19 +79,8 @@ def load_model_vectorizer():
     return m, v
 
 model, vectorizer = load_model_vectorizer()
-
 if model is None or vectorizer is None:
     st.stop()
-
-# -------------------------------
-# Streamlit Page Config
-# -------------------------------
-st.set_page_config(
-    page_title="Fake Review Detection",
-    page_icon="🤖",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
 
 # -------------------------------
 # Sidebar Navigation
@@ -112,7 +110,7 @@ elif page == "Single Prediction":
             st.error("Please enter some text.")
         else:
             with st.spinner("Analyzing..."):
-                # Transform the input text using the loaded vectorizer
+                # Transform input text
                 x_text = vectorizer.transform([review_text])
                 dummy = np.zeros((1, 11))
                 feats = np.hstack((x_text.toarray(), dummy))
