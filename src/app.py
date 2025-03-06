@@ -7,8 +7,14 @@ st.set_page_config(
 )
 
 import os
-# Set NLTK_DATA to a writable directory (e.g., /tmp/nltk_data)
+# Set NLTK_DATA to a writable directory
 os.environ["NLTK_DATA"] = "/tmp/nltk_data"
+
+import nltk
+# Download required NLTK data to /tmp/nltk_data and add it to nltk.data.path
+nltk.download("punkt", download_dir="/tmp/nltk_data", quiet=True)
+nltk.download("averaged_perceptron_tagger", download_dir="/tmp/nltk_data", quiet=True)
+nltk.data.path.insert(0, "/tmp/nltk_data")
 
 import warnings
 from sklearn.exceptions import ConvergenceWarning
@@ -17,17 +23,12 @@ import joblib
 import numpy as np
 import pandas as pd
 import altair as alt
-import nltk
 import re
 import string
 import matplotlib.pyplot as plt
 from textblob import TextBlob
 from wordcloud import WordCloud
 from io import StringIO
-
-# Download required NLTK data to /tmp/nltk_data
-nltk.download("punkt", download_dir="/tmp/nltk_data", quiet=True)
-nltk.download("averaged_perceptron_tagger", download_dir="/tmp/nltk_data", quiet=True)
 
 # -------------------------------
 # Text Analysis Helper Functions
@@ -73,9 +74,10 @@ def count_pos_tags(text, tag_prefix):
 # -------------------------------
 @st.cache_resource
 def load_model_vectorizer():
-    # Assuming model.pkl and tfidf_vectorizer.pkl are in the same directory as this file.
-    model_path = os.path.join(os.path.dirname(__file__), "model.pkl")
-    vectorizer_path = os.path.join(os.path.dirname(__file__), "tfidf_vectorizer.pkl")
+    # Assume model.pkl and tfidf_vectorizer.pkl are in the same directory as this file.
+    base_dir = os.path.dirname(__file__)
+    model_path = os.path.join(base_dir, "model.pkl")
+    vectorizer_path = os.path.join(base_dir, "tfidf_vectorizer.pkl")
     if not os.path.exists(model_path) or not os.path.exists(vectorizer_path):
         st.error("Model files not found. Please ensure 'model.pkl' and 'tfidf_vectorizer.pkl' exist in the app directory.")
         return None, None
@@ -115,7 +117,6 @@ elif page == "Single Prediction":
             st.error("Please enter some text.")
         else:
             with st.spinner("Analyzing..."):
-                # Transform the input text using the loaded vectorizer
                 x_text = vectorizer.transform([review_text])
                 dummy = np.zeros((1, 11))
                 feats = np.hstack((x_text.toarray(), dummy))
