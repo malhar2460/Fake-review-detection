@@ -12,7 +12,7 @@ os.environ["NLTK_DATA"] = "/tmp/nltk_data"
 import nltk
 # Create the directory if it doesn't exist
 os.makedirs("/tmp/nltk_data", exist_ok=True)
-# Add /tmp/nltk_data to nltk.data.path
+# Add /tmp/nltk_data to nltk.data.path so it can find downloaded resources
 nltk.data.path.insert(0, "/tmp/nltk_data")
 
 # Download required NLTK data if not already present
@@ -30,9 +30,11 @@ from sklearn.exceptions import ConvergenceWarning
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
 import joblib
 import numpy as np
+import pandas as pd
 import altair as alt
 import re
 import string
+import matplotlib.pyplot as plt
 from textblob import TextBlob
 from wordcloud import WordCloud
 
@@ -85,8 +87,7 @@ if st.button("Predict"):
                     "Label": ["Computer Generated", "Original"],
                     "Probability": [probabilities[0], probabilities[1]]
                 }
-                df_probs = np.array(data)  # Optionally, you can display as a table or use Altair chart.
-                # Using Altair bar chart with horizontal labels:
+                # Create DataFrame using pandas (ensure import pandas as pd is present)
                 df_probs = pd.DataFrame(data)
                 bar_chart = alt.Chart(df_probs).mark_bar(color="#66b3ff").encode(
                     x=alt.X("Label", axis=alt.Axis(labelAngle=0)),
