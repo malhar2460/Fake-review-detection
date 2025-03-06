@@ -11,11 +11,9 @@ from textblob import TextBlob
 from wordcloud import WordCloud
 from io import StringIO
 
-# --- NLTK Downloads ---
 nltk.download("punkt", quiet=True)
 nltk.download("averaged_perceptron_tagger", quiet=True)
 
-# --- Text Analysis Helper Functions ---
 def lexical_diversity(text):
     w = text.split()
     return len(set(w)) / len(w) if w else 0
@@ -52,7 +50,6 @@ def count_pos_tags(text, tag_prefix):
     pos_tags = nltk.pos_tag(t)
     return sum(1 for _, tg in pos_tags if tg.startswith(tag_prefix))
 
-# --- Load Model & Vectorizer ---
 @st.cache_resource
 def load_model_vectorizer():
     m = joblib.load("model.pkl")
@@ -63,7 +60,6 @@ model, vectorizer = load_model_vectorizer()
 
 def predict_review(text, threshold):
     x_text = vectorizer.transform([text])
-    # Our model expects an extra 11-dimensional dummy (if that’s how your model was trained)
     dummy = np.zeros((1, 11))
     feats = np.hstack((x_text.toarray(), dummy))
     try:
@@ -76,7 +72,6 @@ def predict_review(text, threshold):
         pr = model.predict(feats)[0]
     return "Computer generated" if pr == 0 else "Original", p
 
-# --- Streamlit Page Config ---
 st.set_page_config(
     page_title="Fake Review Detection",
     page_icon="🤖",
@@ -84,7 +79,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# --- Inject a bit of CSS for metrics (especially helpful for dark mode) ---
 st.markdown(
     """
     <style>
@@ -100,12 +94,9 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# --- Sidebar Navigation ---
 st.sidebar.title("Navigation")
-# Removed About page; added "Batch Analysis" as a new feature.
 page = st.sidebar.radio("Go to", ["Home", "Single Prediction", "Insights", "Batch Analysis"])
 
-# --- Pages ---
 if page == "Home":
     st.title("Fake Review Detection Web App")
     st.subheader("Welcome")
@@ -165,7 +156,6 @@ elif page == "Insights":
             ).properties(title="Prediction Probability Distribution", width=300, height=400)
             st.altair_chart(bar_chart, use_container_width=True)
 
-        # --- Compute Text Metrics ---
         lex_div = lexical_diversity(text)
         avg_wl = average_word_length(text)
         pol = sentiment_polarity(text)
@@ -207,64 +197,6 @@ elif page == "Insights":
         with col10:
             st.metric("Adjectives", str(jj))
 
-        # --- Word Cloud ---
         st.markdown("### Word Cloud")
         wc = WordCloud(width=600, height=300, background_color="white").generate(text)
         st.image(wc.to_array(), caption="Word Cloud", width=600)
-elif page == "Batch Analysis":
-    st.title("Batch Analysis")
-    st.write("Upload a CSV file containing your reviews.")
-    uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
-    
-    if uploaded_file is not None:
-        try:
-            df_batch = pd.read_csv(uploaded_file)
-        except Exception as e:
-            st.error("Error reading CSV file.")
-        else:
-            # Ask user to select which column should be treated as review text
-            selected_column = st.selectbox(
-                "Select the column to treat as review text:",
-                options=df_batch.columns,
-                index=df_batch.columns.tolist().index("review_text") if "review_text" in df_batch.columns else 0
-            )
-            st.write(f"Processing reviews from column: **{selected_column}**")
-            
-            threshold = st.slider("Prediction Threshold for Batch Analysis", 0.0, 1.0, 0.5, 0.05)
-            
-            # Add a button to trigger processing
-            if st.button("Process Reviews"):
-                predictions = []
-                metrics = []
-                for review in df_batch[selected_column].fillna("").astype(str):
-                    pred, probs = predict_review(review, threshold)
-                    predictions.append(pred)
-                    metrics.append({
-                        "Lexical Diversity": lexical_diversity(review),
-                        "Avg Word Length": average_word_length(review),
-                        "Polarity": sentiment_polarity(review),
-                        "Subjectivity": subjectivity_score(review),
-                        "Flesch Ease": flesch_reading_ease(review),
-                        "Avg Sentence Len": sentence_length(review),
-                        "Punctuation": punctuation_count(review)
-                    })
-                df_batch["Prediction"] = predictions
-                df_metrics = pd.DataFrame(metrics)
-                st.subheader("Batch Prediction Results")
-                st.dataframe(df_batch.head())
-
-                st.subheader("Aggregated Text Metrics")
-                st.dataframe(df_metrics.describe())
-
-                # Display count of predictions as a bar chart
-                count_df = df_batch["Prediction"].value_counts().reset_index()
-                count_df.columns = ["Prediction", "Count"]
-                bar_chart = alt.Chart(count_df).mark_bar(color="#66b3ff").encode(
-                    x=alt.X("Prediction", axis=alt.Axis(labelAngle=0)),
-                    y="Count"
-                ).properties(title="Distribution of Predictions", width=300, height=400)
-                st.altair_chart(bar_chart, use_container_width=True)
-                
-                # Add a download button for the results
-                csv = df_batch.to_csv(index=False)
-                st.download_button("Download Predictions as CSV", csv, "batch_predictions.csv", "text/csv")
