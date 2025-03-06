@@ -21,6 +21,16 @@ jobs:
       - name: List repository contents
         run: ls -R
 
+      - name: Download Data Files
+        run: |
+          mkdir -p Data/Feature-Engineered
+          # Replace the URLs below with the actual URLs where your CSV files are hosted
+          wget -O Data/Feature-Engineered/preprocessed_lemmatization_features.csv https://example.com/path/to/preprocessed_lemmatization_features.csv
+          wget -O Data/Feature-Engineered/preprocessed_no_stopwords_features.csv https://example.com/path/to/preprocessed_no_stopwords_features.csv
+          wget -O Data/Feature-Engineered/preprocessed_no_stopwords_no_lemmatization_features.csv https://example.com/path/to/preprocessed_no_stopwords_no_lemmatization_features.csv
+          wget -O Data/Feature-Engineered/preprocessed_stemming_features.csv https://example.com/path/to/preprocessed_stemming_features.csv
+          wget -O Data/Feature-Engineered/preprocessed_stemming_no_stopwords_features.csv https://example.com/path/to/preprocessed_stemming_no_stopwords_features.csv
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -30,8 +40,7 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
-          pip install tensorflow
-          pip install jupyter nbconvert
+          pip install jupyter nbconvert tensorflow
 
       - name: Execute N5_Modal_dev Notebook
         run: jupyter nbconvert --to notebook --execute Notebooks/N5_Modal_dev.ipynb --output executed_N5_Modal_dev.ipynb
