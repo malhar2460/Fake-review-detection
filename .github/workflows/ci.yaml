@@ -15,11 +15,12 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v3
 
-      - name: Display working directory
-        run: pwd
-
-      - name: List repository contents
-        run: ls -R
+      - name: Show directory structure
+        run: |
+          echo "Current working directory:"
+          pwd
+          echo "Contents:"
+          ls -R
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -32,14 +33,11 @@ jobs:
           pip install -r requirements.txt
           pip install jupyter nbconvert tensorflow
 
-      - name: Copy sample data files
-        run: |
-          mkdir -p Data/Feature-Engineered
-          cp -R data_sample/* Data/Feature-Engineered/
-          ls -R Data/Feature-Engineered
-
       - name: Execute N5_Modal_dev Notebook
-        run: jupyter nbconvert --to notebook --execute Notebooks/N5_Modal_dev.ipynb --output executed_N5_Modal_dev.ipynb
+        run: |
+          jupyter nbconvert --to notebook \
+            --execute ../../Notebooks/N5_Modal_dev.ipynb \
+            --output executed_N5_Modal_dev.ipynb
 
       - name: Upload executed notebook artifact
         uses: actions/upload-artifact@v4
