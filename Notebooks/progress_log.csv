@@ -1,0 +1,3 @@
+run_key,File,Embedding,Model,Accuracy,Precision,Recall,F1
+preprocessed_lemmatization_features.csv_Tfidf_LogisticRegression,preprocessed_lemmatization_features.csv,Tfidf,LogisticRegression,0.9105972548534685,0.9106033117063795,0.9105972548534685,0.9105979301779691
+preprocessed_lemmatization_features.csv_Tfidf_RandomForest,preprocessed_lemmatization_features.csv,Tfidf,RandomForest,0.8943984172128107,0.8945997627477127,0.8943984172128107,0.8943931595948096
