@@ -1,49 +1,49 @@
-# name: Run N5_Modal_dev Notebook
+name: Run N5_Modal_dev Notebook
 
-# on:
-#   push:
-#     branches: [ "main" ]
-#   pull_request:
-#     branches: [ "main" ]
-#   workflow_dispatch:
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
 
-# jobs:
-#   run-notebook:
-#     runs-on: ubuntu-latest
+jobs:
+  run-notebook:
+    runs-on: ubuntu-latest
 
-#     env:
-#       MLFLOW_TRACKING_URI: "https://dagshub.com/malhar.c.prajapati/my-first-repo.mlflow"
-#       MLFLOW_TRACKING_USERNAME: ${{ secrets.malhar.c.prajapati }}
-#       MLFLOW_TRACKING_PASSWORD: ${{ secrets.DAGSHUB_API_TOKEN }}
+    env:
+      MLFLOW_TRACKING_URI: "https://dagshub.com/malhar.c.prajapati/my-first-repo.mlflow"
+      MLFLOW_TRACKING_USERNAME: ${{ secrets.malhar.c.prajapati }}
+      MLFLOW_TRACKING_PASSWORD: ${{ secrets.DAGSHUB_API_TOKEN }}
 
-#     steps:
-#       - name: Check out repository
-#         uses: actions/checkout@v3
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
 
-#       - name: Show directory structure
-#         run: |
-#           pwd
-#           ls -R
+      - name: Show directory structure
+        run: |
+          pwd
+          ls -R
 
-#       - name: Set up Python
-#         uses: actions/setup-python@v4
-#         with:
-#           python-version: "3.9"
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
 
-#       - name: Install dependencies
-#         run: |
-#           pip install --upgrade pip
-#           pip install -r requirements.txt
-#           pip install jupyter nbconvert tensorflow
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install jupyter nbconvert tensorflow
 
-#       - name: Execute N5_Modal_dev Notebook
-#         run: |
-#           jupyter nbconvert --to notebook \
-#             --execute Notebooks/N5_Modal_dev.ipynb \
-#             --output executed_N5_Modal_dev.ipynb
+      - name: Execute N5_Modal_dev Notebook
+        run: |
+          jupyter nbconvert --to notebook \
+            --execute Notebooks/N5_Modal_dev.ipynb \
+            --output executed_N5_Modal_dev.ipynb
 
-#       - name: Upload executed notebook artifact
-#         uses: actions/upload-artifact@v4
-#         with:
-#           name: executed-notebook
-#           path: executed_N5_Modal_dev.ipynb
+      - name: Upload executed notebook artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: executed-notebook
+          path: executed_N5_Modal_dev.ipynb
