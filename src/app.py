@@ -7,29 +7,19 @@ st.set_page_config(
 )
 
 import os
-# Set the NLTK_DATA environment variable to a writable directory (here, /tmp/nltk_data)
-os.environ["NLTK_DATA"] = "/tmp/nltk_data"
+# Set NLTK_DATA to a directory within the app's root (e.g., /app/nltk_data)
+os.environ["NLTK_DATA"] = "/app/nltk_data"
 
 import nltk
+# Ensure the NLTK data directory exists
+if not os.path.exists("/app/nltk_data"):
+    os.makedirs("/app/nltk_data")
 
-# Ensure that the NLTK data directory exists
-if not os.path.exists("/tmp/nltk_data"):
-    os.makedirs("/tmp/nltk_data")
-
-# Add our directory to the NLTK data path
-nltk.data.path.insert(0, "/tmp/nltk_data")
-
-# Check if the Punkt tokenizer is available, and download it if not.
-try:
-    nltk.data.find("tokenizers/punkt/english.pickle")
-except LookupError:
-    nltk.download("punkt", download_dir="/tmp/nltk_data", quiet=True)
-
-# Do the same for the averaged_perceptron_tagger
-try:
-    nltk.data.find("taggers/averaged_perceptron_tagger")
-except LookupError:
-    nltk.download("averaged_perceptron_tagger", download_dir="/tmp/nltk_data", quiet=True)
+# Download required NLTK data to /app/nltk_data
+nltk.download("punkt", download_dir="/app/nltk_data", quiet=True)
+nltk.download("averaged_perceptron_tagger", download_dir="/app/nltk_data", quiet=True)
+# Insert the download directory at the beginning of nltk.data.path
+nltk.data.path.insert(0, "/app/nltk_data")
 
 import warnings
 from sklearn.exceptions import ConvergenceWarning
