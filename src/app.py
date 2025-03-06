@@ -95,7 +95,7 @@ st.markdown(
 )
 
 st.sidebar.title("Navigation")
-page = st.sidebar.radio("Go to", ["Home", "Single Prediction", "Insights", "Batch Analysis"])
+page = st.sidebar.radio("Go to", ["Home", "Single Prediction", "Insights"])
 
 if page == "Home":
     st.title("Fake Review Detection Web App")
