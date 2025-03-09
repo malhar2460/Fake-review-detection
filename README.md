@@ -85,6 +85,9 @@ Our experiments are fully tracked using MLflow. For every run, we log:
 - **Artifacts:** Confusion matrices (as PNG images) and model artifacts.
 - **Datasets:** Using the `mlflow.data` API, our dataset information is logged and appears under the MLflow UI's "Datasets" tab (for MLflow ≥ 2.4). When unavailable, the CSV files are logged as artifacts.
 
+You can view all our experiments on Dagshub through MLflow here:  
+[View MLflow Experiments on Dagshub](https://dagshub.com/malhar.c.prajapati/my-first-repo.mlflow/)
+
 A progress log (`progress_log.csv`) is maintained to ensure experiments are not re-run unnecessarily.
 
 ---
