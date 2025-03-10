@@ -1,4 +1,14 @@
-# Fake Review Detection Project Documentation
+[![Python](https://img.shields.io/badge/Python-3.8-orange)](https://www.python.org/)
+[![NumPy](https://img.shields.io/badge/NumPy-2.0.2-blue)](https://numpy.org/)
+[![Pandas](https://img.shields.io/badge/Pandas-2.2.3-blue)](https://pandas.pydata.org/)
+[![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-1.5.2-yellow)](https://scikit-learn.org/)
+[![TensorFlow](https://img.shields.io/badge/TensorFlow-2.18-yellow)](https://www.tensorflow.org/)
+[![MLflow](https://img.shields.io/badge/MLflow-2.20.3-lightblue)](https://mlflow.org/)
+[![XGBoost](https://img.shields.io/badge/XGBoost-1.7.6-green)](https://xgboost.readthedocs.io/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.43.0-red)](https://streamlit.io/)
+
+
+# Fake Review Detection Project
 
 Welcome to the comprehensive documentation for our Fake Review Detection project. This project is designed to distinguish between computer-generated (fake) reviews and original (human-written) reviews by leveraging a variety of natural language processing (NLP) techniques, traditional machine learning models, and deep learning methods. In this document, we detail the project background, data processing, feature engineering, model experimentation, experiment tracking using MLflow, and finally, the deployment of our application.
 
@@ -14,7 +24,8 @@ Welcome to the comprehensive documentation for our Fake Review Detection project
    - [Deep Learning Models](#deep-learning-models)
 5. [Experiment Tracking with MLflow](#experiment-tracking-with-mlflow)
 6. [Deployment](#deployment)
-7. [Conclusion](#conclusion)
+7. [Docker Image](#docker-image)
+8. [Conclusion](#conclusion)
 
 ---
 
@@ -103,6 +114,25 @@ The Fake Review Detection web application is deployed and accessible online. Use
 [Fake Review Detection Web App](https://fake-review-detection-mkgwujmh2b6dzcgb6gka2r.streamlit.app/)
 
 ---
+
+## Docker Image
+
+We provide a Docker image for easy deployment of the project. The image includes all necessary code and dependencies.
+
+**To download and run the Docker image:**
+
+1. **Pull the Docker Image:**  
+   ```bash
+   docker pull malhar2460/fake_review_detection:latest
+
+2. **Run the Docker Container:**
+   ```bash
+   docker run -p 8501:8501 malhar2460/fake_review_detection:latest
+
+Your application will then be accessible at http://localhost:8501.
+
+For more details, refer to our Docker Hub repository:
+Docker Hub: [malhar2460/fake_review_detection](https://hub.docker.com/repository/docker/malhar2460/fake_review_detection/general)
 
 ## Conclusion
 
